@@ -6,6 +6,6 @@ including issues I ran into and how I fixed them.
 | Topic | Folder |
 |---|---|
 | Linux basics | [linux](linux/) |
-| Docker | coming soon |
+| Docker | [docker](docker/) |
 
 Environment: WSL 2 (Ubuntu 24.04), Docker.
