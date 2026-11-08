@@ -7,5 +7,6 @@ including issues I ran into and how I fixed them.
 |---|---|
 | Linux basics | [linux](linux/) |
 | Docker | [docker](docker/) |
+| K8S | coming soon |
 
 Environment: WSL 2 (Ubuntu 24.04), Docker.
