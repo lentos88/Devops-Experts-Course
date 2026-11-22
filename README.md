@@ -7,6 +7,6 @@ including issues I ran into and how I fixed them.
 |---|---|
 | Linux basics | [linux](linux/) |
 | Docker | [docker](docker/) |
-| Kubernetes | coming soon |
+| Kubernetes | [kubernetes](kubernetes/) |
 
-Environment: WSL 2 (Ubuntu 24.04), Docker.
+Environment: WSL 2 (Ubuntu 24.04), Docker, minikube, Helm.

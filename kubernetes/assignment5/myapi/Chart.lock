@@ -1,0 +1,6 @@
+dependencies:
+- name: worker
+  repository: ""
+  version: 0.1.0
+digest: sha256:04a2a1ef8e9611c3767ca868c3bb02502607b3af67efc7363827da277571fa7a
+generated: "2026-11-21T21:41:41.654229878+02:00"
