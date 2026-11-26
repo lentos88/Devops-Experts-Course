@@ -1,0 +1,65 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: cron-logs-pv
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data/cron-logs/"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: cron-logs-pvc
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: date-time-cronjob
+spec:
+  schedule: "* * * * *"  
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes: 
+          - name: shared-logs
+            emptyDir: {}
+          - name: pv-logs
+            persistentVolumeClaim:
+              claimName: cron-logs-pvc
+          containers:
+          - name: date-time
+            image: busybox
+            args:
+            - /bin/sh
+            - -c
+            - date >> /logs/date.log 
+            volumeMounts:
+            - name: shared-logs
+              mountPath: /logs
+          - name: log-sidecar
+            image: busybox
+            args:
+            - /bin/sh
+            - -c
+            - sleep 5 && cat /logs/date.log >> /pv-logs/date.log && cat /pv-logs/date.log
+            volumeMounts:
+            - name: shared-logs
+              mountPath: /logs
+            - name: pv-logs
+              mountPath: /pv-logs          
+          restartPolicy: OnFailure

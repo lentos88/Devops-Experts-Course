@@ -1,0 +1,53 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: nginx-pv
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data/nginx-pv/"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nginx-pv-claim
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-task
+  template:                    
+    metadata:
+      labels:
+        app: nginx-task        
+    spec:                      
+      volumes:
+        - name: task-pv-storage
+          persistentVolumeClaim:
+            claimName: nginx-pv-claim     
+      containers:
+        - name: task-pv-container
+          image: nginx
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - mountPath: "/usr/share/nginx/html"
+              name: task-pv-storage
